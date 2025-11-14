@@ -26,6 +26,7 @@ class authController {
       const data = await authService.login(email, password);
       res.cookie("refreshToken", data.token.refreshToken, {
         httpOnly: true,
+        secure: true,
         maxAge: 30 * 24 * 60 * 60 * 1000,
       });
       res.status(200).json(data);
@@ -53,6 +54,7 @@ class authController {
       const data = await authService.refresh(refreshToken);
       res.cookie("refreshToken", data.refreshToken, {
         httpOnly: true,
+        secure: true,
         maxAge: 30 * 24 * 60 * 60 * 1000,
       });
       res.status(200).json(data);
