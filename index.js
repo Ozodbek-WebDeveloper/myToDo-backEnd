@@ -19,7 +19,7 @@ const messageService = require('./src/services/message.service')
 const allowedOrigins = [
   "http://localhost:8000",
   // "http://localhost:5173",
-  "https://mytodo-fronend-production.up.railway.app/",
+  "https://mytodo-fronend-production.up.railway.app",
 ];
 app.use(
   cors({
@@ -44,7 +44,7 @@ const server = http.createServer(app)
 // const io = new Server(server)
 const io = new Server(server, {
   cors: {
-    origin: '*',
+    origin: allowedOrigins,
     methods: ["GET", "POST"],
     credentials: true
   }

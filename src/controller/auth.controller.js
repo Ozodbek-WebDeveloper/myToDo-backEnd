@@ -11,6 +11,7 @@ class authController {
       const data = await authService.register(name, email, password);
       res.cookie("refreshToken", data.token.refreshToken, {
         httpOnly: true,
+        secure: true,
         maxAge: 30 * 24 * 60 * 60 * 1000,
       });
       return res.status(200).json(data);
