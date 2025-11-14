@@ -15,9 +15,10 @@ const app = express();
 const swaggerDocs = require("./swagger");
 const messageService = require('./src/services/message.service')
 //----------- middelware
+//https://mytodo-fronend-production.up.railway.app/
 app.use(
   cors({
-    origin: "http://localhost:4200",
+    origin: "*",
     credentials: true,
   })
 );
@@ -38,7 +39,7 @@ const server = http.createServer(app)
 // const io = new Server(server)
 const io = new Server(server, {
   cors: {
-    origin: 'http://localhost:4200',
+    origin: '*',
     methods: ["GET", "POST"],
     credentials: true
   }
