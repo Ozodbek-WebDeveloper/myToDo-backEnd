@@ -17,7 +17,7 @@ const messageService = require('./src/services/message.service')
 //----------- middelware
 //
 const allowedOrigins = [
-  "http://localhost:8000",
+  "http://localhost:4200",
   // "http://localhost:5173",
   "https://mytodo-fronend-production.up.railway.app",
 ];
