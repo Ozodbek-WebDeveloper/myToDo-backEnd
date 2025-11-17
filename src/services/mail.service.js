@@ -61,7 +61,7 @@ class mailService {
   }
 
   // Send activation email
-  async sendActivationMail(email, activationLink) {
+  async sendMail(email, activationLink) {
     try {
       console.log(`📧 Sending activation email to: ${email}`);
 
