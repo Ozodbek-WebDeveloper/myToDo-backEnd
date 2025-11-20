@@ -16,9 +16,9 @@ const app = express();
 const swaggerDocs = require("./swagger");
 const messageService = require('./src/services/message.service')
 //----------- middleware
-//
+//http://localhost:4200/
 const allowedOrigins = [
-  "http://localhost:4200",
+  "http://localhost:4200/",
   // "http://localhost:5173",
   "https://mytodo-fronend-production.up.railway.app",
 ];
