@@ -11,7 +11,7 @@ class authController {
       const data = await authService.register(name, email, password);
       res.cookie("refreshToken", data.token.refreshToken, {
         httpOnly: true,
-        secure: true,
+        secure: false,
         sameSite: "none",
         maxAge: 30 * 24 * 60 * 60 * 1000,
       });
@@ -27,7 +27,7 @@ class authController {
       const data = await authService.login(email, password);
       res.cookie("refreshToken", data.token.refreshToken, {
         httpOnly: true,
-        secure: true,
+        secure: false,
         sameSite: "none",
         maxAge: 30 * 24 * 60 * 60 * 1000,
       });
@@ -56,7 +56,7 @@ class authController {
       const data = await authService.refresh(refreshToken);
       res.cookie("refreshToken", data.refreshToken, {
         httpOnly: true,
-        secure: true,
+        secure: false,
         sameSite: "none",
         maxAge: 30 * 24 * 60 * 60 * 1000,
       });
