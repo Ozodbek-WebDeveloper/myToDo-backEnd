@@ -369,3 +369,121 @@
  *       404:
  *         description: Todo not found
  */
+
+
+
+// ----------------------------------------------------------------------------------------------EXPENSES---------------------------------------------
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     ExpenseCategoryInput:
+ *       type: object
+ *       required:
+ *         - name
+ *       properties:
+ *         name:
+ *           type: string
+ *           example: Food
+
+ *     ExpenseCategory:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *           example: "672c9fbd8371bfb1a987fa12"
+ *         name:
+ *           type: string
+ *           example: Food
+ *         createdAt:
+ *           type: string
+ *           example: "2025-02-05T12:34:00.000Z"
+ *         updatedAt:
+ *           type: string
+ *           example: "2025-02-05T12:35:00.000Z"
+ */
+
+
+/**
+ * @swagger
+ * /api/expenses/category:
+ *   post:
+ *     summary: Create a new expense category
+ *     tags: [Expense Category]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ExpenseCategoryInput'
+ *     responses:
+ *       201:
+ *         description: Category created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ExpenseCategory'
+ */
+
+/**
+ * @swagger
+ * /api/expenses/category/{id}:
+ *   put:
+ *     summary: Update expense category
+ *     tags: [Expense Category]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ExpenseCategoryInput'
+ *     responses:
+ *       200:
+ *         description: Category updated
+ *         content:
+ *            application/json:
+ *                schema:
+ *                  $ref: '#/components/schemas/ExpenseCategory'  
+ */
+/**
+ * @swagger
+ * /api/expenses/category/{id}:
+ *   delete:
+ *     summary: Delete category
+ *     tags: [Expense Category]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Category deleted
+ */
+/**
+ * @swagger
+ * /api/expenses/allCategory:
+ *   get:
+ *     summary: Get all expense categories
+ *     tags: [Expense Category]
+ *     responses:
+ *       200:
+ *         description: List of categories
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/ExpenseCategory'
+ */
+
+
+
