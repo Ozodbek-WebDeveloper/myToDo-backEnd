@@ -18,7 +18,7 @@ const messageService = require('./src/services/message.service')
 //----------- middleware
 //http://localhost:4200/
 const allowedOrigins = [
-  "http://localhost:4200/",
+  "http://localhost:4200",
   // "http://localhost:5173",
   "https://mytodo-fronend-production.up.railway.app",
 ];
@@ -26,6 +26,8 @@ app.use(
   cors({
     origin: allowedOrigins,
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 app.use(cookieParser());
@@ -34,7 +36,7 @@ app.use(fileUpload());
 app.use('/static', express.static(path.join(__dirname, 'src', 'static')));
 swaggerDocs(app);
 // routes
-app.use('/api',expenseRoute)
+app.use('/api', expenseRoute)
 app.use("/api/auth", authRoute);
 app.use("/api", authMiddleware.verifyToken, todoRoute);
 app.use('/api/chat', authMiddleware.verifyToken, messageRoute)
