@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const tokenService = require("./token.service");
 const mailService = require("./mail.service");
 const fileService = require("./file.service");
+const isDev = process.env.NODE_ENV === 'dev'
 
 class authService {
   async register(name, email, password) {
@@ -15,10 +16,12 @@ class authService {
     const passHash = await bcrypt.hash(password, 10);
     const user = await authModel.create({ name, email, password: passHash });
     const userDto = new UserDto(user);
-    await mailService.sendMail(
-      email,
-      `${process.env.BASE_URL}/activated/${user.id}`
-    );
+    if (isDev) {
+      await mailService.sendMail(
+        email,
+        `${process.env.BASE_URL}/activated/${user.id}`
+      );
+    }
     const token = tokenService.generateToken({ ...userDto });
 
     await tokenService.saveToken(userDto.id, token.refreshToken);
