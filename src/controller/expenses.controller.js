@@ -76,15 +76,77 @@ class ExpensesController {
       const id = req.params.id
       const data = await expensesService.deteleItem(id)
       return res.status(200).json(data)
-    } catch (error) {
+    } catch (err) {
       console.log(err);
       return res.status(400).json({ message: err })
     }
   }
 
-  async getAllItem(req,res){
-    
+  async getAllItem(req, res) {
+    try {
+      const data = await expensesService.getAllItem()
+      return res.status(200).json(data)
+    } catch (err) {
+      console.log(err);
+      return res.status(400).json({ message: err })
+    }
+  }
+
+  //----------- Expenses
+
+  async createExpenses(req, res) {
+    try {
+      // const {itemId,name,description,price,date,paymentMethod} =  req.body
+      const data = await expensesService.expensesCreate({ ...req.body })
+      return res.status(200).json(data)
+    } catch (err) {
+      console.log(err);
+      return res.status(400).json({ message: err })
+    }
+  }
+
+  async updateExpenses(req, res) {
+    try {
+      const id = req.params.id
+      const data = await expensesService.updateExpenses(id, { ...req.body })
+    } catch (err) {
+      console.log(err);
+      return res.status(400).json({ message: err })
+    }
+  }
+
+  async deleteExpenses(req, res) {
+    try {
+      const id = req.params.id
+      const data = await expensesService.deleteExpenses(id)
+      return res.status(200).json(data)
+    } catch (err) {
+      console.log(err);
+      return res.status(400).json({ message: err })
+    }
+  }
+
+  async findOneExpenses(req, res) {
+    try {
+      const id = req.params.id
+      const data = await expensesService.findOneExpenses(id)
+      return res.status(200).json(data)
+    } catch (err) {
+      console.log(err);
+      return res.status(400).json({ message: err })
+    }
+  }
+
+  async getAllExpenses(req, res) {
+    try {
+      const data = await expensesService.getAllExpenses()
+      return res.status(200).json(data)
+    } catch (err) {
+      console.log(err);
+      return res.status(400).json({ message: err })
+    }
   }
 }
+
 
 module.exports = new ExpensesController();

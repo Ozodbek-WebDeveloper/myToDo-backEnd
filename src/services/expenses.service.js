@@ -20,7 +20,7 @@ class ExpensesService {
   }
   // items
   async createItem(categoryId, name) {
-    const res = await expensesModel.Item.create(categoryId, name)
+    const res = await expensesModel.Item.create({ categoryId, name })
     return res
   }
 
@@ -36,6 +36,31 @@ class ExpensesService {
 
   async getAllItem() {
     const res = await expensesModel.Item.find()
+    return res
+  }
+  // expenses
+  async expensesCreate(data) {
+    const res = await expensesModel.Expense.create({ ...data })
+    return res
+  }
+
+  async updateExpenses(id, data) {
+    const res = await expensesModel.Expense.findByIdAndUpdate(id, { ...data }, { new: true })
+    return res
+  }
+
+  async deleteExpenses(id) {
+    const res = await expensesModel.Expense.findByIdAndDelete(id)
+    return res
+  }
+
+  async findOneExpenses(id) {
+    const res = await expensesModel.Expense.findById(id)
+    return res
+  }
+
+  async getAllExpenses() {
+    const res = await expensesModel.Expense.find()
     return res
   }
 }
