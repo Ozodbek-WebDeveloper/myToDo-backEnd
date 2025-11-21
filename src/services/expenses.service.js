@@ -24,8 +24,8 @@ class ExpensesService {
     return res
   }
 
-  async updateItem(id, name) {
-    const res = await expensesModel.Item.findByIdAndUpdate(id, { name }, { new: true })
+  async updateItem(id, { data }) {
+    const res = await expensesModel.Item.findByIdAndUpdate(id, { ...data }, { new: true })
     return res
   }
 

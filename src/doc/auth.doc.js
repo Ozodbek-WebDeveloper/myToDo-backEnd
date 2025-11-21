@@ -407,7 +407,7 @@
 
 /**
  * @swagger
- * /api/expenses/category:
+ * /expenses/category:
  *   post:
  *     summary: Create a new expense category
  *     tags: [Expense Category]
@@ -428,7 +428,7 @@
 
 /**
  * @swagger
- * /api/expenses/category/{id}:
+ * /expenses/category/{id}:
  *   put:
  *     summary: Update expense category
  *     tags: [Expense Category]
@@ -454,7 +454,7 @@
  */
 /**
  * @swagger
- * /api/expenses/category/{id}:
+ * /expenses/category/{id}:
  *   delete:
  *     summary: Delete category
  *     tags: [Expense Category]
@@ -470,7 +470,7 @@
  */
 /**
  * @swagger
- * /api/expenses/allCategory:
+ * /expenses/allCategory:
  *   get:
  *     summary: Get all expense categories
  *     tags: [Expense Category]
@@ -487,3 +487,314 @@
 
 
 
+
+
+
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     ExpenseItemInput:
+ *       type: object
+ *       required:
+ *         - categoryId
+ *         - name
+ *       properties:
+ *         categoryId:
+ *           type: string
+ *           example: "672c9fbd8371bfb1a987fa12"
+ *         name:
+ *           type: string
+ *           example: "Bread"
+
+ *     ExpenseItem:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *           example: "672ca4f2a23c4e55fa1ade88"
+ *         categoryId:
+ *           type: string
+ *           example: "672c9fbd8371bfb1a987fa12"
+ *         name:
+ *           type: string
+ *           example: "Bread"
+ *         createdAt:
+ *           type: string
+ *           example: "2025-02-05T12:34:00.000Z"
+ *         updatedAt:
+ *           type: string
+ *           example: "2025-02-05T12:36:00.000Z"
+ */
+
+
+
+
+/**
+ * @swagger
+ * /expenses/item:
+ *   post:
+ *     summary: Create new expense item
+ *     tags: [Expense Item]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ExpenseItemInput'
+ *     responses:
+ *       201:
+ *         description: Item created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ExpenseItem'
+ */
+
+
+/**
+ * @swagger
+ * /expenses/item/{id}:
+ *   put:
+ *     summary: Update expense item
+ *     tags: [Expense Item]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ExpenseItemInput'
+ *     responses:
+ *       200:
+ *         description: Item updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ExpenseItem'
+ */
+
+
+/**
+ * @swagger
+ * /expenses/item/{id}:
+ *   delete:
+ *     summary: Delete expense item
+ *     tags: [Expense Item]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Item deleted
+ */
+
+
+/**
+ * @swagger
+ * /expenses/allItem:
+ *   get:
+ *     summary: Get all expense items
+ *     tags: [Expense Item]
+ *     responses:
+ *       200:
+ *         description: List of all items
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/ExpenseItem'
+ */
+
+
+
+
+
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     ExpenseInput:
+ *       type: object
+ *       required:
+ *         - itemId
+ *         - name
+ *         - description
+ *         - price
+ *         - paymentMethod
+ *       properties:
+ *         itemId:
+ *           type: string
+ *           example: "672ca4f2a23c4e55fa1ade88"
+ *         name:
+ *           type: string
+ *           example: "Lunch"
+ *         description:
+ *           type: string
+ *           example: "Ordered food at the restaurant"
+ *         price:
+ *           type: number
+ *           example: 35.5
+ *         date:
+ *           type: string
+ *           example: "2025-02-05T14:20:00.000Z"
+ *         paymentMethod:
+ *           type: string
+ *           example: "Cash"
+ *         receipt_image:
+ *           type: string
+ *           example: "/uploads/receipt_123.png"
+
+ *     Expense:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *           example: "672cb3f2b55ddf21ce45f322"
+ *         itemId:
+ *           type: string
+ *           example: "672ca4f2a23c4e55fa1ade88"
+ *         name:
+ *           type: string
+ *           example: "Lunch"
+ *         description:
+ *           type: string
+ *           example: "Ordered food at the restaurant"
+ *         price:
+ *           type: number
+ *           example: 35.5
+ *         date:
+ *           type: string
+ *           example: "2025-02-05T14:20:00.000Z"
+ *         paymentMethod:
+ *           type: string
+ *           example: "Cash"
+ *         receipt_image:
+ *           type: string
+ *           example: "/uploads/receipt_123.png"
+ *         createdAt:
+ *           type: string
+ *           example: "2025-02-05T13:00:00.000Z"
+ *         updatedAt:
+ *           type: string
+ *           example: "2025-02-05T13:30:00.000Z"
+ */
+
+
+/**
+ * @swagger
+ * /expenses/expens:
+ *   post:
+ *     summary: Create new expense
+ *     tags: [Expense]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ExpenseInput'
+ *     responses:
+ *       201:
+ *         description: Expense created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Expense'
+ */
+
+
+/**
+ * @swagger
+ * /expenses/expens/{id}:
+ *   put:
+ *     summary: Update expense
+ *     tags: [Expense]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ExpenseInput'
+ *     responses:
+ *       200:
+ *         description: Expense updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Expense'
+ */
+
+
+/**
+ * @swagger
+ * /expenses/expens/{id}:
+ *   delete:
+ *     summary: Delete expense
+ *     tags: [Expense]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Expense deleted
+ */
+
+
+/**
+ * @swagger
+ * /expenses/expens/{id}:
+ *   get:
+ *     summary: Get single expense
+ *     tags: [Expense]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Expense found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Expense'
+ */
+
+
+/**
+ * @swagger
+ * /expenses/allExpens:
+ *   get:
+ *     summary: Get all expenses
+ *     tags: [Expense]
+ *     responses:
+ *       200:
+ *         description: List of all expenses
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Expense'
+ */

@@ -61,9 +61,9 @@ class ExpensesController {
 
   async epdateItem(req, res) {
     try {
-      const name = req.body.name
+      const { name, categoryId } = req.body
       const id = req.params.id
-      const data = await expensesService.updateItem(id, name)
+      const data = await expensesService.updateItem(id, { name, categoryId })
       return res.status(200).json(data)
     } catch (err) {
       console.log(err);

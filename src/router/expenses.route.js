@@ -10,7 +10,7 @@ router.get('/expenses/allCategory', expensesController.getAllCategory)
 router.post('/expenses/item', expensesController.createItem)
 router.put('/expenses/item/:id', expensesController.epdateItem)
 router.delete('/expenses/item/:id', expensesController.deleteItem)
-router.get('/expenses/item', expensesController.getAllItem)
+router.get('/expenses/allItem', expensesController.getAllItem)
 
 router.post('/expenses/expens', expensesController.createExpenses)
 router.put('/expenses/expens/:id', expensesController.updateExpenses)
