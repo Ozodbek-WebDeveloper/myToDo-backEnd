@@ -59,7 +59,7 @@ class ExpensesController {
     }
   }
 
-  async epdateItem(req, res) {
+  async updateItem(req, res) {
     try {
       const { name, categoryId } = req.body
       const id = req.params.id
