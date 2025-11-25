@@ -15,10 +15,10 @@ const expenseItem = new mongoose.Schema({
 const expense = new mongoose.Schema({
     itemId: { type: mongoose.Schema.Types.ObjectId, ref: 'ExpenseItem', required: true },
     name: { type: String, required: true },
-    description: { type: String, required: true },
+    description: { type: String,},
     price: { type: Number, required: true },
     date: { type: Date, default: Date.now() },
-    paymentMethod: { type: String },
+    paymentMethod: { type: String, required: true },
     receipt_image: { type: String },
 }, { timestamps: true })
 
