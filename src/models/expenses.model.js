@@ -18,7 +18,7 @@ const expense = new mongoose.Schema({
     description: { type: String, required: true },
     price: { type: Number, required: true },
     date: { type: Date, default: Date.now() },
-    paymentMethod: { type: String, required: true },
+    paymentMethod: { type: String },
     receipt_image: { type: String },
 }, { timestamps: true })
 
