@@ -24,7 +24,7 @@ class ExpensesService {
     return res
   }
 
-  async updateItem(id,  data ) {
+  async updateItem(id, data) {
     const res = await expensesModel.Item.findByIdAndUpdate(id, { ...data }, { new: true })
     return res
   }
@@ -60,7 +60,7 @@ class ExpensesService {
   }
 
   async getAllExpenses() {
-    const res = await expensesModel.Expense.find()
+    const res = await expensesModel.Expense.find().populate({ path: 'itemId', populate: { path: 'categoryId' } })
     return res
   }
 }
