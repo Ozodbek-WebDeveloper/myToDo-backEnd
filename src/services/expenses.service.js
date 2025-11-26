@@ -55,7 +55,7 @@ class ExpensesService {
   }
 
   async findOneExpenses(id) {
-    const res = await expensesModel.Expense.findById(id)
+    const res = await expensesModel.Expense.findById(id).populate({path:'itemId', populate:{path:'categoryId'}})
     return res
   }
 
