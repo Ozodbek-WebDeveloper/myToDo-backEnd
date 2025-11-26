@@ -4,8 +4,9 @@ class ExpensesController {
   // ------------   category
   async categoryCreate(req, res) {
     try {
+      const ownerId = req.user.id
       const name = req.body.name;
-      const data = await expensesService.createCategory(name)
+      const data = await expensesService.createCategory({ ownerId, name })
       return res.status(200).json(data)
     } catch (err) {
       console.log(err);
@@ -38,7 +39,8 @@ class ExpensesController {
 
   async getAllCategory(req, res) {
     try {
-      const data = await expensesService.getAllCategories()
+      const ownerId = req.user.id
+      const data = await expensesService.getAllCategories(ownerId)
       return res.status(200).json(data)
     } catch (err) {
       console.log(err);
@@ -50,8 +52,9 @@ class ExpensesController {
 
   async createItem(req, res) {
     try {
+      const ownerId = req.user.id
       const { categoryId, name } = req.body
-      const data = await expensesService.createItem(categoryId, name)
+      const data = await expensesService.createItem(categoryId, { ownerId, name })
       return res.status(200).json(data)
     } catch (err) {
       console.log(err);
@@ -84,7 +87,8 @@ class ExpensesController {
 
   async getAllItem(req, res) {
     try {
-      const data = await expensesService.getAllItem()
+      const ownerId = req.user.id
+      const data = await expensesService.getAllItem(ownerId)
       return res.status(200).json(data)
     } catch (err) {
       console.log(err);
@@ -97,7 +101,8 @@ class ExpensesController {
   async createExpenses(req, res) {
     try {
       // const {itemId,name,description,price,date,paymentMethod} =  req.body
-      const data = await expensesService.expensesCreate({ ...req.body })
+      const ownerId = req.user.id
+      const data = await expensesService.expensesCreate({ ...req.body, ownerId })
       return res.status(200).json(data)
     } catch (err) {
       console.log(err);
@@ -140,7 +145,8 @@ class ExpensesController {
 
   async getAllExpenses(req, res) {
     try {
-      const data = await expensesService.getAllExpenses()
+      const ownerId = req.user.id
+      const data = await expensesService.getAllExpenses(ownerId)
       return res.status(200).json(data)
     } catch (err) {
       console.log(err);

@@ -2,10 +2,11 @@ const expensesModel = require("../models/expenses.model");
 
 class ExpensesService {
   // -------------  category
-  async createCategory(name) {
-    const res = await expensesModel.Category.create({ name });
+  async createCategory(data) {
+    const res = await expensesModel.Category.create({ ...data });
     return res
   }
+
   async updateCategory(id, name) {
     const res = await expensesModel.Category.findByIdAndUpdate(id, { name }, { new: true });
     return res
@@ -14,13 +15,13 @@ class ExpensesService {
     const res = await expensesModel.Category.findByIdAndDelete(id);
     return res
   }
-  async getAllCategories() {
-    const res = await expensesModel.Category.find();
+  async getAllCategories(id) {
+    const res = await expensesModel.Category.find({ ownerId: id });
     return res
   }
   // items
-  async createItem(categoryId, name) {
-    const res = await expensesModel.Item.create({ categoryId, name })
+  async createItem(categoryId, data) {
+    const res = await expensesModel.Item.create({ categoryId, ...data })
     return res
   }
 
@@ -34,8 +35,8 @@ class ExpensesService {
     return res
   }
 
-  async getAllItem() {
-    const res = await expensesModel.Item.find()
+  async getAllItem(id) {
+    const res = await expensesModel.Item.find({ownerId:id})
     return res
   }
   // expenses
@@ -55,12 +56,12 @@ class ExpensesService {
   }
 
   async findOneExpenses(id) {
-    const res = await expensesModel.Expense.findById(id).populate({path:'itemId', populate:{path:'categoryId'}})
+    const res = await expensesModel.Expense.findById(id).populate({ path: 'itemId', populate: { path: 'categoryId' } })
     return res
   }
 
-  async getAllExpenses() {
-    const res = await expensesModel.Expense.find().populate({ path: 'itemId', populate: { path: 'categoryId' } })
+  async getAllExpenses(id) {
+    const res = await expensesModel.Expense.find({ownerId:id}).populate({ path: 'itemId', populate: { path: 'categoryId' } })
     return res
   }
 }
