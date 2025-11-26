@@ -694,7 +694,7 @@
 
 /**
  * @swagger
- * /expenses/expens:
+ * /expenses/expense:
  *   post:
  *     summary: Create new expense
  *     tags: [Expense]
@@ -716,7 +716,7 @@
 
 /**
  * @swagger
- * /expenses/expens/{id}:
+ * /expenses/expense/{id}:
  *   put:
  *     summary: Update expense
  *     tags: [Expense]
@@ -744,7 +744,7 @@
 
 /**
  * @swagger
- * /expenses/expens/{id}:
+ * /expenses/expense/{id}:
  *   delete:
  *     summary: Delete expense
  *     tags: [Expense]
@@ -762,7 +762,7 @@
 
 /**
  * @swagger
- * /expenses/expens/{id}:
+ * /expenses/expense/{id}:
  *   get:
  *     summary: Get single expense
  *     tags: [Expense]
@@ -784,7 +784,7 @@
 
 /**
  * @swagger
- * /expenses/allExpens:
+ * /expenses/allExpense:
  *   get:
  *     summary: Get all expenses
  *     tags: [Expense]
