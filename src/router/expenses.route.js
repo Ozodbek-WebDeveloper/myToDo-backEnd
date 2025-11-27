@@ -16,5 +16,5 @@ router.post('/expenses/expense', expensesController.createExpenses)
 router.put('/expenses/expense/:id', expensesController.updateExpenses)
 router.delete('/expenses/expense/:id', expensesController.deleteExpenses)
 router.get('/expenses/expense/:id', expensesController.findOneExpenses)
-router.get('/expenses/allExpense', expensesController.getAllExpenses)
+router.post('/expenses/allExpense', expensesController.getAllExpenses)
 module.exports = router;

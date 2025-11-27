@@ -1,6 +1,6 @@
 const authService = require("../services/auth.service");
 const tokenService = require("../services/token.service");
-
+const authEnum = require('../enums/auth.enum')
 class authController {
   async register(req, res) {
     try {
@@ -107,7 +107,13 @@ class authController {
 
   async getAll(req, res) {
     try {
-      const data = await authService.getAll()
+      const { page, size } = req.body
+      const start = (page - 1) * size
+      const role = req.user.role
+      if (role !== authEnum.USER_ROLES.ADMIN) {
+        return res.status(200).json({ message: 'for admins only' })
+      }
+      const data = await authService.getAll(start, size)
       return res.status(200).json(data)
     } catch (error) {
       res.status(500).json(error)

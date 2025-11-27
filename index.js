@@ -36,9 +36,9 @@ app.use(fileUpload());
 app.use('/static', express.static(path.join(__dirname, 'src', 'static')));
 swaggerDocs(app);
 // routes
-app.use("/api/auth", authRoute);
+app.use("/api/auth",  authRoute);
 app.use("/api", authMiddleware.verifyToken, todoRoute);
-app.use('/api', expenseRoute)
+app.use('/api', authMiddleware.verifyToken, expenseRoute)
 app.use('/api/chat', authMiddleware.verifyToken, messageRoute)
 //
 const port = process.env.PORT || (process.env.NODE_ENV === 'dev' ? process.env.PORT_DEV : process.env.PORT_PROD);

@@ -1,5 +1,5 @@
 const expensesModel = require("../models/expenses.model");
-
+const authEnums = require('../enums/auth.enum')
 class ExpensesService {
   // -------------  category
   async createCategory(data) {
@@ -36,7 +36,7 @@ class ExpensesService {
   }
 
   async getAllItem(id) {
-    const res = await expensesModel.Item.find({ownerId:id})
+    const res = await expensesModel.Item.find({ ownerId: id })
     return res
   }
   // expenses
@@ -60,9 +60,11 @@ class ExpensesService {
     return res
   }
 
-  async getAllExpenses(id) {
-    const res = await expensesModel.Expense.find({ownerId:id}).populate({ path: 'itemId', populate: { path: 'categoryId' } })
-    return res
+  async getAllExpenses(start, end, filter, role) {
+    const res = await expensesModel.Expense.find({ ...filter }).skip(start).limit(end).populate({ path: 'itemId', populate: { path: 'categoryId' } })
+    // const total = role === authEnums.USER_ROLES.ADMIN ? await expensesModel.Expense.countDocuments() : await expensesModel.Expense.countDocuments({ ownerId: filter.ownerId })
+    const total = await expensesModel.Expense.countDocuments({ ownerId: filter.ownerId })
+    return { total, res }
   }
 }
 

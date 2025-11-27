@@ -146,7 +146,13 @@ class ExpensesController {
   async getAllExpenses(req, res) {
     try {
       const ownerId = req.user.id
-      const data = await expensesService.getAllExpenses(ownerId)
+      const role = req.user.role
+      const filter = {ownerId}
+      const { page, size, categoryId, itemId } = req.body
+      if(categoryId) filter.categoryId = categoryId
+      if(itemId) filter.itemId = itemId
+      const start = (page - 1) * size
+      const data = await expensesService.getAllExpenses(start, size, filter,role)
       return res.status(200).json(data)
     } catch (err) {
       console.log(err);

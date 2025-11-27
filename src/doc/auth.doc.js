@@ -95,52 +95,136 @@
  *         description: Unauthorized – invalid or missing token
  */
 
+
+/**
+ * @swagger
+ * /auth/edit/{id}:
+ *   post:
+ *     summary: Update user information
+ *     tags: [Auth]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: User ID to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: "Ozodbek"
+ *               email:
+ *                 type: string
+ *                 example: "ozodbek@example.com"
+ *               avatar:
+ *                 type: string
+ *                 example: "http://localhost:8000/static/avatar123.jpg"
+ *               phone:
+ *                 type: string
+ *                 example: "+998901234567"
+ *               address:
+ *                 type: string
+ *                 example: "Tashkent, Uzbekistan"
+ *               dateOfBirth:
+ *                 type: string
+ *                 format: date
+ *                 example: "1995-05-21"
+ *               bio:
+ *                 type: string
+ *                 example: "Frontend developer"
+ *               settings:
+ *                 type: object
+ *                 properties:
+ *                   themeDark:
+ *                     type: boolean
+ *                     example: false
+ *     responses:
+ *       200:
+ *         description: User successfully updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Invalid data or missing fields
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Server error
+ */
+
+
+
 /**
  * @swagger
  * /auth/getUsers:
- *   get:
+ *   post:
  *     summary: Barcha foydalanuvchilarni olish
  *     tags: [Auth]
  *     security:
  *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               page:
+ *                 type: number
+ *                 example: 1
+ *               size:
+ *                 type: number
+ *                 example: 10
  *     responses:
  *       200:
- *         description: Foydalanuvchilar ro'yxati muvaffaqiyatli olindi
+ *         description: Foydalanuvchilar ro'yxati
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   _id:
- *                     type: string
- *                     example: "672eabf1b38a17a9d33c5b21"
- *                   name:
- *                     type: string
- *                     example: "Ozodbek"
- *                   email:
- *                     type: string
- *                     example: "ozodbek@example.com"
- *                   roles:
- *                     type: string
- *                     example: "admin"
- *                   avatar:
- *                     type: string
- *                     example: "http://localhost:8000/static/avatar123.jpg"
- *                   isActive:
- *                     type: boolean
- *                     example: true
- *                   settings:
+ *               type: object
+ *               properties:
+ *                 total:
+ *                   type: number
+ *                   example: 42
+ *                 res:
+ *                   type: array
+ *                   items:
  *                     type: object
  *                     properties:
- *                       themeDark:
+ *                       _id:
+ *                         type: string
+ *                       name:
+ *                         type: string
+ *                       email:
+ *                         type: string
+ *                       roles:
+ *                         type: string
+ *                       avatar:
+ *                         type: string
+ *                       isActive:
  *                         type: boolean
- *                         example: false
+ *                       settings:
+ *                         type: object
+ *                         properties:
+ *                           themeDark:
+ *                             type: boolean
  *       401:
  *         description: Token noto‘g‘ri yoki yo‘q
  *       500:
  *         description: Server xatosi
+ *
+
  *
  * /auth/user/{id}:
  *   delete:
@@ -261,12 +345,32 @@
 
 /**
  * @swagger
- * /todo:
- *   get:
+ * /todo/paging:
+ *   post:
  *     summary: Get all todos of current user
  *     tags: [Todo]
  *     security:
  *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               page:
+ *                 type: number
+ *                 example: 1
+ *               size:
+ *                 type: number
+ *                 example: 10
+ *               priority:
+ *                  type: string
+ *                  enum: [low, medium, high]
+ *                  example: "medium"
+ *               isCompleted:
+ *                  type: boolean
+ *                  example: false        
  *     responses:
  *       200:
  *         description: List of user's todos
@@ -277,6 +381,7 @@
  *               items:
  *                 $ref: '#/components/schemas/Todo'
  */
+
 
 /**
  * @swagger
@@ -785,16 +890,51 @@
 /**
  * @swagger
  * /expenses/allExpense:
- *   get:
- *     summary: Get all expenses
+ *   post:
+ *     summary: Get all expenses with pagination and filters
  *     tags: [Expense]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               page:
+ *                 type: number
+ *                 example: 1
+ *                 description: Current page number
+ *               size:
+ *                 type: number
+ *                 example: 10
+ *                 description: Number of items per page
+ *               categoryId:
+ *                 type: string
+ *                 example: "64f0e6b2a1c2d3e456789abc"
+ *                 description: Optional category filter
+ *               itemId:
+ *                 type: string
+ *                 example: "64f0e6b2a1c2d3e456789def"
+ *                 description: Optional item filter
  *     responses:
  *       200:
- *         description: List of all expenses
+ *         description: List of expenses with pagination info
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Expense'
+ *               type: object
+ *               properties:
+ *                 total:
+ *                   type: number
+ *                   example: 42
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Expense'
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         description: Server error
  */

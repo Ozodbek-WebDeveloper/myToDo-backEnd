@@ -118,10 +118,11 @@ class authService {
     }
   }
 
-  async getAll() {
+  async getAll(start, end) {
     try {
-      const res = await authModel.find()
-      return res
+      const res = await authModel.find().skip(start).limit(end) 
+      const total = await authModel.countDocuments()
+      return {total,res}
     } catch (error) {
       throw new Error(error.message)
     }

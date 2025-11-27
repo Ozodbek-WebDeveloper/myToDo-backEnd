@@ -20,7 +20,7 @@ class todoService {
 
     return { total, res };
   }
-
+  
   async findOne(id) {
     if (!id) {
       throw new Error("Id not found");

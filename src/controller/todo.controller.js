@@ -16,7 +16,7 @@ class todoController {
       console.log(error);
     }
   }
-
+ 
   async getAll(req, res) {
     try {
       const { page, size, priority, isCompleted } = req.body;
