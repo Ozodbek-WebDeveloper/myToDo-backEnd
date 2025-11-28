@@ -1,6 +1,8 @@
 const authService = require("../services/auth.service");
 const tokenService = require("../services/token.service");
 const authEnum = require('../enums/auth.enum')
+
+const isDev = process.env.NODE_ENV === 'dev'
 class authController {
   async register(req, res) {
     try {
@@ -11,12 +13,11 @@ class authController {
       if (password.length < 6) {
         return res.status(400).json({ message: 'Password must be at least 6 characters' });
       }
-
       const data = await authService.register(name, email, password);
       res.cookie("refreshToken", data.token.refreshToken, {
         httpOnly: true,
-        secure: false,
-        sameSite: "none",
+        secure: !isDev,
+        sameSite: !isDev ? "none" : 'lax',
         maxAge: 30 * 24 * 60 * 60 * 1000,
       });
       return res.status(200).json(data);
@@ -31,8 +32,8 @@ class authController {
       const data = await authService.login(email, password);
       res.cookie("refreshToken", data.token.refreshToken, {
         httpOnly: true,
-        secure: false,
-        sameSite: "none",
+        secure: !isDev,
+        sameSite: !isDev ? "none" : 'lax',
         maxAge: 30 * 24 * 60 * 60 * 1000,
       });
       res.status(200).json(data);
@@ -60,8 +61,8 @@ class authController {
       const data = await authService.refresh(refreshToken);
       res.cookie("refreshToken", data.refreshToken, {
         httpOnly: true,
-        secure: false,
-        sameSite: "none",
+        secure: !isDev,
+        sameSite: !isDev ? "none" : 'lax',
         maxAge: 30 * 24 * 60 * 60 * 1000,
       });
       res.status(200).json(data);
@@ -70,7 +71,7 @@ class authController {
       console.log(error);
     }
   }
-
+  
   async activeted(req, res) {
     try {
       const id = req.params.id;
@@ -87,7 +88,6 @@ class authController {
       const authHeader = req.headers.authorization;
       const token = authHeader.split(" ")[1];
       const decode = await tokenService.validateAccessToken(token);
-
       const data = await authService.getMe(decode.id);
       res.status(200).json(data);
     } catch (error) {
