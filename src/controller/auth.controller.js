@@ -8,6 +8,10 @@ class authController {
       if (!name || !email || !password) {
         return res.status(400).json({ message: 'name,email,password  required' });
       }
+      if (password.length < 6) {
+        return res.status(400).json({ message: 'Password must be at least 6 characters' });
+      }
+
       const data = await authService.register(name, email, password);
       res.cookie("refreshToken", data.token.refreshToken, {
         httpOnly: true,
