@@ -99,7 +99,7 @@
 /**
  * @swagger
  * /auth/edit/{id}:
- *   post:
+ *   put:
  *     summary: Update user information
  *     tags: [Auth]
  *     security:
@@ -152,9 +152,49 @@
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/User'
+ *               type: object
+ *               properties:
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                       example: "67a1b2c3d4e5f67890123456"
+ *                     name:
+ *                       type: string
+ *                       example: "Ozodbek"
+ *                     email:
+ *                       type: string
+ *                       example: "ozodbek@example.com"
+ *                     avatar:
+ *                       type: string
+ *                       example: "http://localhost:8000/static/avatar123.jpg"
+ *                     phone:
+ *                       type: string
+ *                       example: "+998901234567"
+ *                     address:
+ *                       type: string
+ *                       example: "Tashkent"
+ *                     dateOfBirth:
+ *                       type: string
+ *                       format: date
+ *                     bio:
+ *                       type: string
+ *                       example: "Frontend developer"
+ *                     roles:
+ *                       type: string
+ *                       example: "USER"
+ *                     isActive:
+ *                       type: boolean
+ *                       example: true
+ *                     settings:
+ *                       type: object
+ *                       properties:
+ *                         themeDark:
+ *                           type: boolean
+ *                           example: false
  *       400:
- *         description: Invalid data or missing fields
+ *         description: Invalid data
  *       401:
  *         description: Unauthorized
  *       404:
@@ -162,7 +202,6 @@
  *       500:
  *         description: Server error
  */
-
 
 
 /**
