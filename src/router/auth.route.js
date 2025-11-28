@@ -10,7 +10,7 @@ route.get("/refresh", authController.refresh);
 route.get("/activeted/:id", authController.activeted);
 route.get("/me", authMiddleware.verifyToken, authController.me);
 route.put("/edit/:id", authMiddleware.verifyToken, authController.editMe);
-route.post('/getUsers', authMiddleware.verifyToken, authController.getAll)
+route.post('/getUsers', authController.getAll)
 route.delete('/user/:id', authMiddleware.verifyToken, authController.detele)
 route.post('/activeLink/:id', authController.activeLink)
 module.exports = route;

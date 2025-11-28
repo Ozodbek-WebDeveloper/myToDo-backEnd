@@ -113,10 +113,10 @@ class authController {
     try {
       const { page, size } = req.body
       const start = (page - 1) * size
-      const role = req.user.role
-      if (role !== authEnum.USER_ROLES.ADMIN) {
-        return res.status(200).json({ message: 'for admins only' })
-      }
+      // const role = req.user.role
+      // if (role !== authEnum.USER_ROLES.ADMIN) {
+      //   return res.status(200).json({ message: 'for admins only' })
+      // }
       const data = await authService.getAll(start, size)
       return res.status(200).json(data)
     } catch (error) {
