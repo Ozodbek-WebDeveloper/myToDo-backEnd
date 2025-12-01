@@ -76,9 +76,10 @@ class ExpensesService {
 
 async getAllExpenses(start, end, filter, role) {
   const agg = [
+    // 1. Dastlabki qidiruv
     { $match: { ownerId: filter.ownerId } },
-
-    // ITEM GET
+    
+    // 2. expenseitems bilan bog'lash
     {
       $lookup: {
         from: "expenseitems",
@@ -88,8 +89,8 @@ async getAllExpenses(start, end, filter, role) {
       }
     },
     { $unwind: { path: "$item", preserveNullAndEmptyArrays: true } },
-
-    // CATEGORY GET
+    
+    // 3. categories bilan bog'lash
     {
       $lookup: {
         from: "categories",
@@ -101,36 +102,23 @@ async getAllExpenses(start, end, filter, role) {
     { $unwind: { path: "$category", preserveNullAndEmptyArrays: true } },
   ];
 
-  // ⭐ CategoryId bo‘lsa Faqat shunda filter qo‘shamiz
+  // 🛑 DIQQAT: Filtrlash bosqichini massivga qo'shish (push)
   if (filter.categoryId) {
     agg.push({
       $match: {
-        $or: [
-          { "category._id": new mongoose.Types.ObjectId(filter.categoryId) },
-          { category: null } // ⭐ Category NULL bo‘lsa — yo‘qotmaydi
-        ]
+        // `$unwind`dan keyin `category` ichidagi `_id`ga murojaat qilish kerak
+        "category._id": filter.categoryId
       }
     });
   }
 
-  // TOTAL
-  const total = await expensesModel.Expense.aggregate([
-    ...agg,
-    { $count: "total" }
-  ]);
-
-  const count = total[0]?.total ?? 0;
-
-  // PAGINATION
-  const res = await expensesModel.Expense.aggregate([
-    ...agg,
-    { $skip: start },
-    { $limit: end - start }
-  ]);
-
-  return { total: count, res };
+  // Bu aggregation pipeline ma'lumotlar bilan ishlash uchun ishlatiladi.
+  // Agar siz faqat pipeline ni qaytarmoqchi bo'lsangiz:
+  return { agg };
+  
+  // Agar ma'lumotlar bazasida bajarmoqchi bo'lsangiz:
+  // return ExpenseModel.aggregate(agg); // Agar ExpenseModel mavjud bo'lsa
 }
-
 
 
 
