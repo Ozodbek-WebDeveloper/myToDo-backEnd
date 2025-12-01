@@ -1,4 +1,5 @@
 const expensesModel = require("../models/expenses.model");
+const mongoose = require('mongoose')
 const authEnums = require('../enums/auth.enum')
 class ExpensesService {
   // -------------  category
@@ -60,12 +61,85 @@ class ExpensesService {
     return res
   }
 
-  async getAllExpenses(start, end, filter, role) {
-    const res = await expensesModel.Expense.find({ ...filter }).skip(start).limit(end).populate({ path: 'itemId', populate: { path: 'categoryId' } })
-    // const total = role === authEnums.USER_ROLES.ADMIN ? await expensesModel.Expense.countDocuments() : await expensesModel.Expense.countDocuments({ ownerId: filter.ownerId })
-    const total = await expensesModel.Expense.countDocuments({ ownerId: filter.ownerId })
-    return { total, res }
+
+
+
+
+
+
+
+
+
+
+
+
+
+async getAllExpenses(start, end, filter, role) {
+  const agg = [
+    { $match: { ownerId: filter.ownerId } },
+
+    // ITEM GET
+    {
+      $lookup: {
+        from: "expenseitems",
+        localField: "itemId",
+        foreignField: "_id",
+        as: "item"
+      }
+    },
+    { $unwind: { path: "$item", preserveNullAndEmptyArrays: true } },
+
+    // CATEGORY GET
+    {
+      $lookup: {
+        from: "categories",
+        localField: "item.categoryId",
+        foreignField: "_id",
+        as: "category"
+      }
+    },
+    { $unwind: { path: "$category", preserveNullAndEmptyArrays: true } },
+  ];
+
+  // ⭐ CategoryId bo‘lsa Faqat shunda filter qo‘shamiz
+  if (filter.categoryId) {
+    agg.push({
+      $match: {
+        $or: [
+          { "category._id": new mongoose.Types.ObjectId(filter.categoryId) },
+          { category: null } // ⭐ Category NULL bo‘lsa — yo‘qotmaydi
+        ]
+      }
+    });
   }
+
+  // TOTAL
+  const total = await expensesModel.Expense.aggregate([
+    ...agg,
+    { $count: "total" }
+  ]);
+
+  const count = total[0]?.total ?? 0;
+
+  // PAGINATION
+  const res = await expensesModel.Expense.aggregate([
+    ...agg,
+    { $skip: start },
+    { $limit: end - start }
+  ]);
+
+  return { total: count, res };
+}
+
+
+
+
+
+
+
+
+
+
 }
 
 module.exports = new ExpensesService();
