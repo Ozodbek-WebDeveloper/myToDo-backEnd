@@ -1,6 +1,8 @@
 const expensesModel = require("../models/expenses.model");
 const mongoose = require('mongoose')
 const authEnums = require('../enums/auth.enum')
+const ObjectId = mongoose.Types.ObjectId;
+
 class ExpensesService {
   // -------------  category
   async createCategory(data) {
@@ -61,71 +63,52 @@ class ExpensesService {
     return res
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-async getAllExpenses(start, end, filter, role) {
-  const agg = [
-    // 1. Dastlabki qidiruv
-    { $match: { ownerId: filter.ownerId } },
-    
-    // 2. expenseitems bilan bog'lash
-    {
-      $lookup: {
-        from: "expenseitems",
-        localField: "itemId",
-        foreignField: "_id",
-        as: "item"
+  async getAllExpenses(start, end, filter, role) {
+    const agg = [
+      {
+        $match: { ownerId: new ObjectId(filter.ownerId) }
+      },
+      {
+        $lookup: {
+          from: "expenseitems",
+          localField: "itemId",
+          foreignField: "_id",
+          as: "item"
+        }
+      },
+      { $unwind: "$item" },
+      ...(filter.categoryId ? [{
+        $match: {
+          "item.categoryId": new ObjectId(filter.categoryId)
+        }
+      }] : []),
+      {
+        $lookup: {
+          from: "categories",
+          localField: "item.categoryId",
+          foreignField: "_id",
+          as: "item.category"
+        }
+      },
+      { $unwind: "$item.category" },
+      ...(filter.itemId ? [{
+        $match: {
+          "item._id": new ObjectId(filter.itemId)
+        }
+      }] : []),
+      {
+        $facet: {
+          total: [{ $count: "count" }],
+          res: [{ $skip: start }, { $limit: end }]
+        }
       }
-    },
-    { $unwind: { path: "$item", preserveNullAndEmptyArrays: true } },
-    
-    // 3. categories bilan bog'lash
-    {
-      $lookup: {
-        from: "categories",
-        localField: "item.categoryId",
-        foreignField: "_id",
-        as: "category"
-      }
-    },
-    { $unwind: { path: "$category", preserveNullAndEmptyArrays: true } },
-  ];
+    ];
 
-  // 🛑 DIQQAT: Filtrlash bosqichini massivga qo'shish (push)
-  if (filter.categoryId) {
-    agg.push({
-      $match: {
-        // `$unwind`dan keyin `category` ichidagi `_id`ga murojaat qilish kerak
-        "category._id": filter.categoryId
-      }
-    });
+    const data = await expensesModel.Expense.aggregate(agg);
+    const total = data[0].total[0]?.count || 0;
+    const res = data[0].res;
+    return { total, res };
   }
-
-  // Bu aggregation pipeline ma'lumotlar bilan ishlash uchun ishlatiladi.
-  // Agar siz faqat pipeline ni qaytarmoqchi bo'lsangiz:
-  return { agg };
-  
-  // Agar ma'lumotlar bazasida bajarmoqchi bo'lsangiz:
-  // return ExpenseModel.aggregate(agg); // Agar ExpenseModel mavjud bo'lsa
-}
-
-
-
-
-
-
-
 
 
 }
