@@ -152,7 +152,6 @@ class ExpensesController {
       if(categoryId) filter.categoryId = categoryId
       if(itemId) filter.itemId = itemId
       const start = (page - 1) * size
-      console.log(filter);
       
       const data = await expensesService.getAllExpenses(start, size, filter,role)
       return res.status(200).json(data)
